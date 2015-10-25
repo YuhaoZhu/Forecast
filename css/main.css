@@ -1,0 +1,19 @@
+body {
+    background: url(../src/bg.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.head_title{
+    text-align: center;
+}
+
+.warning_text{
+    color: red;
+}
+
+.label_text{
+    color: white;;
+}
