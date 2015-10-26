@@ -15,5 +15,9 @@ body {
 }
 
 .label_text{
-    color: white;;
+    color: white;
+}
+.narrow_gap{
+    padding-left: 1px;
+    padding-right: 1px;
 }

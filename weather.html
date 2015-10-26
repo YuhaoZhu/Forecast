@@ -15,20 +15,20 @@
     <div class="col-md-offset-1 col-md-10 col-xs-12" style="margin-top: 30px;background-color: rgba(0,0,0,0.1);">
         <br/>
 
-        <div class="col-md-3 col-xs-12">
+        <div class="narrow_gap col-md-3 col-sm-12 col-xs-12">
             <label class="label_text">Street Address:</label>
             <input type="text" class="form-control" name="address" id="address"
                    placeholder="Enter Street Address">
             <label id="address_err" class="warning_text"></label>
             <br/>
         </div>
-        <div class="col-md-2 col-xs-12">
+        <div class="narrow_gap col-md-2 col-sm-12 col-xs-12">
             <label class="label_text">City:</label>
             <input type="text" class="form-control" name="city" id="city" placeholder="Enter the city name">
             <label id="city_err" class="warning_text"></label>
             <br/>
         </div>
-        <div class="col-md-2 col-xs-12">
+        <div class="narrow_gap col-md-2 col-sm-12 col-xs-12">
             <label class="label_text">State:</label>
             <select id="state" class="form-control">
                 <option value="HEHE">Select your state...</option>
@@ -87,12 +87,29 @@
             <label id="state_err" class="warning_text"></label>
             <br/>
         </div>
-        <div class="col-md-3 col-xs-12">
-            <br class="col-xs-0"/>
-            <label class="label_text">Degree:</label>
-        </div>
-        <div class="col-md-2 col-xs-12">
+        <div class="narrow_gap col-md-2 col-sm-12 col-xs-12">
 
+            <label class="label_text" style="margin-top: 7px;">Degree:</label>
+            <br/>
+            <label class="label_text" style="font-size: 12px;">
+                <input type="radio" name="degree" id="degreeOption1" value="us" checked>
+                Fahrenheit</input>
+            </label>
+            <label class="label_text" style="font-size: 12px;">
+                <input type="radio" name="degree" id="degreeOption2" value="si"> Celsius</input>
+            </label>
+        </div>
+        <div class="narrow_gap col-md-3 col-sm-12 col-xs-12">
+            <div class="row"><br/></div>
+            <div class="btn-group pull-right">
+                <a href="#" class="btn btn-primary" style="margin-right: 5px;"><span class="glyphicon glyphicon-search"></span> Search</a>
+                <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span> Reset</a>
+            </div>
+            <div class="row"><br/></div>
+            <div class="row">
+                <label class="narrow_gap label_text col-md-offset-4 col-md-4 col-sm-offset-6 col-sm-4 col-xs-offset-3 col-xs-6 text-right" style="text-align:right;">Powered by:</label>
+                <img class=" narrow_gap img-responsive col-md-4 col-sm-2 col-xs-3" src="src/forecast_logo.png"/>
+            </div>
         </div>
     </div>
 </div>
