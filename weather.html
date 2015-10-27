@@ -106,7 +106,7 @@
                        style="margin-right: 5px;"><span
                             class="glyphicon glyphicon-search"></span> Search</a>
                     <a id="clearButton" class="btn btn-default"><span
-                            class="glyphicon glyphicon-refresh"></span> Reset</a>
+                            class="glyphicon glyphicon-refresh"></span> Clear</a>
                 </div>
                 <div class="row"><br/></div>
                 <div class="row">
@@ -120,17 +120,18 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
-        $.validator.addMethod("stateCheck", function (value, element) {
-            alert("HEHE");
-            return false;
-        }, "Please specify the correct domain for your documents");
+        $.validator.addMethod("addressCheck", function (value, element) {
+            return /\S/.test(value);
+        }, "Cannot contains only whitespace");
         $('#searchForm').validate({
             rules: {
                 address: {
-                    required: true
+                    required: true,
+                    addressCheck:true
                 },
                 city: {
-                    required: true
+                    required: true,
+                    addressCheck:true
                 },
                 state: {
                     required: true
@@ -138,10 +139,12 @@
             },
             messages: {
                 address: {
-                    required: "Please enter the street address"
+                    required: "Please enter the street address",
+                    addressCheck:"Please enter the street address"
                 },
                 city: {
-                    required: "Please enter the city"
+                    required: "Please enter the city",
+                    addressCheck:"Please enter the city"
                 },
                 state: {
                     required: "Please select a state"
