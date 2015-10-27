@@ -10,8 +10,20 @@ body {
     text-align: center;
 }
 
-.warning_text{
+#state-error{
     color: red;
+}
+
+#address-error{
+    color: red;
+}
+
+#city-error{
+    color: red;
+}
+
+.red-star{
+   color: red;
 }
 
 .label_text{
