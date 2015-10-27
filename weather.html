@@ -9,6 +9,7 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/additional-methods.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -18,6 +19,7 @@
          style="margin-top: 30px;">
         <div class="col-md-12 col-xs-12 col-sm-12" style="background-color: rgba(0,0,0,0.1);">
             <br/>
+
             <form id="searchForm" method="get" role="form">
                 <div class="narrow_gap col-md-3 col-sm-12 col-xs-12 form-group">
                     <label class="label_text" for="address">Street Address:<span class="red-star">*</span> </label>
@@ -121,12 +123,103 @@
         <div class="row col-md-12 col-xs-12 col-sm-12">
             <hr align="center" class="col-md-12 col-xs-12 col-sm-12"/>
         </div>
+        <!-- Display for result-->
+        <div id='result' class="row col-md-12 col-xs-12 col-sm-12">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#now" aria-controls="now" role="tab" data-toggle="tab">Right
+                    Now</a></li>
+                <li role="presentation"><a href="#hours" aria-controls="hours" role="tab" data-toggle="tab">Next 24
+                    Hours</a></li>
+                <li role="presentation"><a href="#days" aria-controls="days" role="tab" data-toggle="tab">Next 7
+                    Days</a></li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="now">
+                    <div id="now_weather" class="col-md-6 col-xs-12 col-sm-12 none_gap"
+                         >
+                        <div class="col-md-12 col-xs-12 col-sm-12 none_gap" style="background-color: #D16565;">
+                            <div class="col-md-6 col-xs-12 col-sm-6">
+                                <img class="col-md-offset-2 col-md-8 col-sm-offset-4 col-sm-4 col-xs-offset-4 col-xs-4"
+                                     id="now_icon" style="padding-bottom: 10px;padding-top: 10px;"/>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <label id="now_summary_text" class="col-md-12 col-sm-12 col-xs-12"
+                                       style="text-align: center;color: white;"></label>
+                                <label class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;color: white;">
+                                    <span id="now_summary_tmp" style="color: white;font-size: 60px;"></span>
+                                    <span id="now_summary_degree" class="pull-up"
+                                          style="color: white;font-size: 12px;"></span>
+                                </label>
+                                <label class="col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10 col-xs-offset-1 col-xs-10"
+                                       style="text-align: center;">
+                                    <span id="now_summary_tmpMin" style="color: blue;font-size: 12px;"></span>
+                                    <span>|</span>
+                                    <span id="now_summary_tmpMax" style="color: green;font-size: 12px;"></span>
+                                </label>
+
+                                <div class="col-md-1 col-sm-1 col-xs-1 img-responsive none_gap">
+                                    <img class="img-responsive" src="src/fb_icon.png" style="padding-right: 5px;"/>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-striped" >
+                            <tr style="text-align: left;">
+                                <td>Precipitation</td>
+                                <td id="now_precipitation"></td>
+                            </tr>
+                            <tr style="text-align: left;">
+                                <td>Chance of Rain</td>
+                                <td id="now_rain"></td>
+                            </tr>
+                            <tr style="text-align: left;">
+                                <td>Wind Speed</td>
+                                <td id="now_wind"></td>
+                            </tr>
+                            <tr style="text-align: left;">
+                                <td>Dew Point</td>
+                                <td id="now_dew"></td>
+                            </tr>
+                            <tr style="text-align: left;">
+                                <td>Humidity</td>
+                                <td id="now_humidity"></td>
+                            </tr>
+                            <tr style="text-align: left;">
+                                <td>Visibility</td>
+                                <td id="now_visb"></td>
+                            </tr>
+                            <tr style="text-align: left;">
+                                <td>Sunrise</td>
+                                <td id="now_sunrise"></td>
+                            </tr>
+                            <tr style="text-align: left;">
+                                <td>Sunset</td>
+                                <td id="now_sunset"></td>
+                            </tr>
+
+                        </table>
+                    </div>
+                    <div id="map" class="col-md-6 col-xs-12 col-sm-12">
+
+                    </div>
+
+                </div>
+                <div role="tabpanel" class="tab-pane" id="hours">
+                    Hours
+                </div>
+                <div role="tabpanel" class="tab-pane" id="days">
+                    Days
+                </div>
+            </div>
+        </div>
     </div>
 
 
 </div>
 <script type="text/javascript">
+    "use strict";
     $(document).ready(function () {
+        $('#result').hide();
+        var data;
         $.validator.addMethod("addressCheck", function (value, element) {
             return /\S/.test(value);
         }, "Cannot contains only whitespace");
@@ -160,15 +253,51 @@
         });
         $('#searchButton').on('click', function () {
             if ($('#searchForm').valid()) {
-                alert("Tiya is stealing snacks");
+                var url = 'http://weather571-env.elasticbeanstalk.com/?';
+                var param = $('#searchForm').serialize();
+                $.ajax({
+                    url: url,
+                    data: param,
+                    type: 'GET',
+                    success: function (obj) {
+                        obj = JSON.parse(obj);
+                        if (obj.hasError === false) {
+                            data = obj.data;
+                            parse(data);
+                            buildMap(data.lat, data.lng);
+                            $('#result').show();
+                        }
+                    }
+                });
             }
         });
 
         $('#clearButton').on('click', function () {
             $('#searchForm').validate().resetForm();
+            $('#result').hide();
+            data = {};
             clearForm();
         });
     });
+    function parse(data) {
+        $('#now_icon').attr("src", "src/" + data.currently.icon);
+        $('#now_summary_text').text(data.currently.summary + ' in ' + $('#city').val() + ', ' + $('#state').val());
+        $('#now_summary_tmp').text(data.currently.temperature);
+        $('#now_summary_degree').html(data.units.temperature_unit);
+        $('#now_summary_tmpMin').html('L:' + data.currently.temperatureMin);
+        $('#now_summary_tmpMax').html('H:' + data.currently.temperatureMax);
+        $('#now_precipitation').html(data.currently.precipIntensity);
+        $('#now_rain').html(data.currently.precipProbability);
+        $('#now_wind').html(data.currently.windSpeed);
+        $('#now_dew').html(data.currently.dewPoint);
+        $('#now_visb').html(data.currently.visibility);
+        $('#now_humidity').html(data.currently.humidity);
+        $('#now_sunrise').html(data.currently.sunriseTime);
+        $('#now_sunset').html(data.currently.sunsetTime);
+    }
+    function buildMap(x, y) {
+        //TODO Put the map working
+    }
     function clearForm() {
         document.getElementById("address").value = "";
         document.getElementById("city").value = "";

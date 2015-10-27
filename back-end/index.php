@@ -117,7 +117,7 @@ if (strcmp($status, "OK") == 0) {
     $weather_data->data->currently->precipIntensity=precipitation($doc->currently->precipIntensity);
     $weather_data->data->currently->windSpeed=number_format($doc->currently->windSpeed,2,'.','') .$windSpeed_unit;
     $weather_data->data->currently->dewPoint=number_format($doc->currently->dewPoint,2,'.','') .$dewPoint_unit;
-    $weather_data->data->currently->humidity=(int)($doc->currently->humidity) .'%';
+    $weather_data->data->currently->humidity=(int)($doc->currently->humidity*100) .'%';
     $weather_data->data->currently->visibility=number_format($doc->currently->visibility,2,'.','').$visibility_unit;
 
 
@@ -131,7 +131,7 @@ if (strcmp($status, "OK") == 0) {
         $hourly->cloudCover=(int)($row->cloudCover*100) .'%';
         $hourly->temp=number_format($row->temperature,'2','.','');
         $hourly->wind=$row->windSpeed .$windSpeed_unit;
-        $hourly->humidity=(int)$row->humidity .'%';
+        $hourly->humidity=(int)($row->humidity*100) .'%';
         $hourly->visibility=$row->visibility .$visibility_unit;
         $hourly->pressure=$row->pressure .$pressure_unit;
         array_push($weather_data->data->hourly->data,$hourly);
@@ -141,11 +141,18 @@ if (strcmp($status, "OK") == 0) {
     $weather_data->data->daily->data=[];
     foreach($doc->daily->data as $row){
         $daily=new stdClass();
+        $daily->summary=$row->summary;
         $daily->day=date("l",$row->time);
         $daily->mDate=date("F d",$row->time);
         $daily->icon=weather_image($row->icon);
         $daily->temperatureMax=(int)($row->temperatureMax) .'&deg;';
         $daily->temperatureMin=(int)($row->temperatureMin) .'&deg;';
+        $daily->wind=$row->windSpeed .$windSpeed_unit;
+        $daily->humidity=(int)($row->humidity*100) .'%';
+        $daily->visibility=$row->visibility .$visibility_unit;
+        $daily->pressure=$row->pressure .$pressure_unit;
+        $daily->sunriseTime=date("h:i A", $row->sunriseTime);
+        $daily->sunsetTime=date("h:i A", $row->sunsetTime);
         array_push($weather_data->data->daily->data,$daily);
     }
     echo json_encode($weather_data);

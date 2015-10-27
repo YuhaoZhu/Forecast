@@ -33,3 +33,23 @@ body {
     padding-left: 1px;
     padding-right: 1px;
 }
+.none_gap{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.nav-tabs>li>a{
+    background-color:#EFEFEF;
+    color:#5A82BB;
+}
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus{
+    color: #EEF3F8;
+    background-color: #5A82BB;
+}
+
+.table-striped > tbody > tr:nth-child(2n) > td, .table-striped > tbody > tr:nth-child(2n) > th {
+    background-color: #EDDEDE;
+}
