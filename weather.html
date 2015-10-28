@@ -337,16 +337,14 @@
             var lonLat = new OpenLayers.LonLat(y[0], x[0])
                     .transform(
                     new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-                    map.getProjectionObject() // to Spherical Mercator Projection
+                    new OpenLayers.Projection("EPSG:900913") // to Spherical Mercator Projection
             );
             var zoom = 9;
             map.setCenter(lonLat, zoom);
-            var markers = new OpenLayers.Layer.Markers("Markers");
-            map.addLayer(markers);
-            alert("Map Loaded");
         }
 
     }
+
     function clearForm() {
         document.getElementById("address").value = "";
         document.getElementById("city").value = "";
