@@ -304,7 +304,8 @@
         $('#map').css({
             height: h1
         });
-        if (typeof map =='undefined'){
+        console.log(typeof map);
+        if (typeof map ==='undefined'){
             map = new OpenLayers.Map('map');
             var layer_cloud = new OpenLayers.Layer.XYZ(
                     "clouds",
