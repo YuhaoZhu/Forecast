@@ -324,7 +324,7 @@
                         sphericalMercator: true
                     }
             );
-            map.addLayers([new OpenLayers.Layer.OSM(),layer_precipitation, layer_cloud]);
+            map.addLayers([new OpenLayers.Layer.OSM()]);
             var lonLat = new OpenLayers.LonLat(y[0], x[0])
                     .transform(
                     new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
