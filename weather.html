@@ -3,6 +3,7 @@
 <head>
     <title>Forecast Search</title>
     <meta charset="UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/main.css">
@@ -324,7 +325,7 @@
                         sphericalMercator: true
                     }
             );
-            map.addLayers([new OpenLayers.Layer.OSM()]);
+            map.addLayers([new OpenLayers.Layer.OSM(),layer_precipitation, layer_cloud]);
             var lonLat = new OpenLayers.LonLat(y[0], x[0])
                     .transform(
                     new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
