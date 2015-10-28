@@ -53,3 +53,10 @@ body {
 .table-striped > tbody > tr:nth-child(2n) > td, .table-striped > tbody > tr:nth-child(2n) > th {
     background-color: #EDDEDE;
 }
+
+.none_padding_margin{
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
