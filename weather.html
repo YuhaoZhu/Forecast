@@ -281,6 +281,12 @@
             clearForm();
         });
     });
+    $(window).on('resize',function(){
+        var h1 = $('#now_weather').height();
+        $('#map').css({
+            height: h1
+        });
+    });
     function parse(data) {
         $('#now_icon').attr("src", "src/" + data.currently.icon);
         $('#now_summary_text').text(data.currently.summary + ' in ' + $('#city').val() + ', ' + $('#state').val());
@@ -300,11 +306,9 @@
     function buildMap(x, y) {
         //TODO Put the map working
         var h1 = $('#now_weather').height();
-
         $('#map').css({
             height: h1
         });
-        console.log(typeof map);
         if (map ===null){
             map = new OpenLayers.Map('map')
             var layer_cloud = new OpenLayers.Layer.XYZ(
