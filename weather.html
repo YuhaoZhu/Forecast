@@ -141,7 +141,8 @@
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane fade in active" id="now">
                     <div id="now_weather" class="col-md-6 col-xs-12 col-sm-12 none_gap">
-                        <div id="now_head" class="col-md-12 col-xs-12 col-sm-12 none_gap" style="background-color: #D16565;">
+                        <div id="now_head" class="col-md-12 col-xs-12 col-sm-12 none_gap"
+                             style="background-color: #D16565;">
                             <div class="col-md-6 col-xs-12 col-sm-6">
                                 <img class="col-md-offset-2 col-md-8 col-sm-offset-4 col-sm-4 col-xs-offset-4 col-xs-4"
                                      id="now_icon" style="padding-bottom: 10px;padding-top: 10px;"/>
@@ -167,7 +168,7 @@
                                 </div>
                             </div>
                         </div>
-                        <table style="margin-bottom: 0px;"id="now_table" class="table table-striped">
+                        <table style="margin-bottom: 0px;" id="now_table" class="table table-striped">
                             <tr style="text-align: left;">
                                 <td>Precipitation</td>
                                 <td id="now_precipitation">N/A</td>
@@ -205,10 +206,23 @@
                     <div id="map" class="col-md-6 col-xs-12 col-sm-12 none_gap"></div>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="hours">
-                    Hours
+                    <table class="table">
+                        <thead class="thead_hour">
+                        <tr>
+                            <th>Time</th>
+                            <th>Summary</th>
+                            <th>Cloud Cover</th>
+                            <th id="hour_temp_units">Temp(&deg;)</th>
+                            <th>View Detail</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbody_hour" class="tbody_hour">
+
+                        </tbody>
+                    </table>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="days">
-                    Days
+                    Next 7 Days
                 </div>
             </div>
         </div>
@@ -273,7 +287,6 @@
                 });
             }
         });
-
         $('#clearButton').on('click', function () {
             $('#searchForm').validate().resetForm();
             $('#result').hide();
@@ -281,12 +294,17 @@
             clearForm();
         });
     });
-    $(window).on('resize',function(){
+    $(window).on('resize', function () {
+        redrawMap();
+    });
+
+    function redrawMap() {
         var h1 = $('#now_weather').height();
+        if (h1 === 0) return;
         $('#map').css({
             height: h1
         });
-    });
+    }
     function parse(data) {
         $('#now_icon').attr("src", "src/" + data.currently.icon);
         $('#now_summary_text').text(data.currently.summary + ' in ' + $('#city').val() + ', ' + $('#state').val());
@@ -302,14 +320,32 @@
         $('#now_humidity').html(data.currently.humidity);
         $('#now_sunrise').html(data.currently.sunriseTime);
         $('#now_sunset').html(data.currently.sunsetTime);
+        $('#hour_temp_units').html("Temp(" + data.units.temperature_unit + ")");
+        var content = "";
+        var hourly = data.hourly.data;
+        for (var i = 0; i < 24; i++) {
+            content += '<tr>';
+            content += '<td>' + hourly[i].time + '</td>';
+            content += '<td><img style="height:45px;" src="src/' + hourly[i].summary + '"/></td>';
+            content += '<td>' + hourly[i].cloudCover + '</td>';
+            content += '<td>' + hourly[i].temp + '</td>';
+            content += '<td><span type="button" data-toggle="collapse" data-target="#data' + i + '" class="btn glyphicon glyphicon-plus" style="color: #4C70A8;padding-top: 0px;"/>' + '</td>';
+            content += '</tr>';
+            content += '<tr style="background-color:#F3F3F3;" class="collapse" id="data' + i + '">' + '<td colspan="5">'
+            content += '<table class="table table_hour_collapse" ><thead"><tr><th>Wind</th><th>Humidity</th><th>Visibility</th><th>Pressure</th></tr></thead>';
+            content += '<tbody><tr><td>'+hourly[i].wind+'</td><td>'+hourly[i].humidity+'</td><td>'+hourly[i].visibility+'</td><td>'+hourly[i].pressure+'</td></tr></tbody></table></td></tr>';
+        }
+        $('#tbody_hour').html(content);
     }
     function buildMap(x, y) {
         //TODO Put the map working
         var h1 = $('#now_weather').height();
-        $('#map').css({
-            height: h1
-        });
-        if (map ===null){
+        if (h1 != 0) {
+            $('#map').css({
+                height: h1
+            });
+        }
+        if (map === null) {
             map = new OpenLayers.Map('map')
             var layer_cloud = new OpenLayers.Layer.XYZ(
                     "clouds",
@@ -330,7 +366,7 @@
                         sphericalMercator: true
                     }
             );
-            map.addLayers([new OpenLayers.Layer.OSM(),layer_precipitation, layer_cloud]);
+            map.addLayers([new OpenLayers.Layer.OSM(), layer_precipitation, layer_cloud]);
             var lonLat = new OpenLayers.LonLat(y[0], x[0])
                     .transform(
                     new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
@@ -338,7 +374,7 @@
             );
             var zoom = 9;
             map.setCenter(lonLat, zoom);
-        }else{
+        } else {
             var lonLat = new OpenLayers.LonLat(y[0], x[0])
                     .transform(
                     new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984

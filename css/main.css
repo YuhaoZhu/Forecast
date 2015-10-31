@@ -60,3 +60,33 @@ body {
     margin-left: 0px;
     margin-right: 0px;
 }
+
+.thead_hour th{
+    padding-left: 0px;
+    padding-right: 0px;
+    text-align: center;
+    background-color: #4C70A8;
+    color: white;
+}
+
+.tbody_hour{
+    text-align: center;
+}
+.tbody_hour:before{
+    display: block;
+    line-height: 10em;
+    color: white;
+}
+.tbody_hour tr{
+    background-color: white;
+}
+
+.table_hour_collapse th{
+    text-align: center;
+}
+.table_hour_collapse thead{
+    background: white;
+}
+.table_hour_collapse td{
+    background: #F3F3F3;
+}
