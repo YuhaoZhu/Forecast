@@ -1,5 +1,5 @@
 #This is for CSCI 571 Web Technology instructed by USC.
-Links to this website: weather.yuhaozhu.me
+Links to this website: forecast.yuhaozhu.me
 
 ##Forecast Api was provided by Forecast
 ##PHP Server is runnng on AWS as required. But in future may refer to my own server.
