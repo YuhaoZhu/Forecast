@@ -14,17 +14,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.light.js"></script>
     <script>
         //Init Facebook SDK
-        window.fbAsyncInit = function() {
+        window.fbAsyncInit = function () {
             FB.init({
-                appId      : '1639037693020962',
-                xfbml      : true,
-                version    : 'v2.5'
+                appId: '1639037693020962',
+                xfbml: true,
+                version: 'v2.5'
             });
         };
-        (function(d, s, id){
+        (function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) {return;}
-            js = d.createElement(s); js.id = id;
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement(s);
+            js.id = id;
             js.src = "//connect.facebook.net/en_US/sdk.js";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
@@ -146,10 +149,10 @@
         <div id='result' class="row col-md-12 col-xs-12 col-sm-12 none_padding_margin">
             <ul class="nav nav-tabs none_gap" role="tablist">
                 <li role="presentation" class="active" style=" max-width: 33%;"><a href="#now" aria-controls="now"
-                                                                                  role="tab" data-toggle="tab">Right
+                                                                                   role="tab" data-toggle="tab">Right
                     Now</a></li>
                 <li role="presentation" style=" max-width: 33%;"><a href="#hours" aria-controls="hours" role="tab"
-                                                                   data-toggle="tab">Next 24
+                                                                    data-toggle="tab">Next 24
                     Hours</a></li>
                 <li role="presentation" style="max-width: 33%;"><a href="#days" aria-controls="days" role="tab"
                                                                    data-toggle="tab">Next 7
@@ -181,7 +184,8 @@
                                 </label>
 
                                 <div class="col-md-1 col-sm-1 col-xs-1 img-responsive none_gap">
-                                    <a href="javascript:shareFB()"><img class="img-responsive" src="src/fb_icon.png" style="height:20px;width:20px;"/></a>
+                                    <a href="javascript:shareFB()"><img class="img-responsive" src="src/fb_icon.png"
+                                                                        style="height:20px;width:20px;"/></a>
                                 </div>
                             </div>
                         </div>
@@ -252,7 +256,9 @@
 <script type="text/javascript">
     "use strict";
     var map = null;
-    var icon=null;
+    var icon = null;
+    var weather_status = null;
+    var weather_temp = null;
     $(document).ready(function () {
         $('#result').hide();
         var data;
@@ -318,31 +324,32 @@
         redrawMap();
     });
 
-    function shareFB(){
-        FB.getLoginStatus(function(response) {
+    function shareFB() {
+        FB.getLoginStatus(function (response) {
             if (response.status === 'connected') {
-               postFB();
+                postFB();
             } else {
                 // the user isn't logged in to Facebook.
-                FB.login(function(response){
-                    if (response.status==='connected'){
+                FB.login(function (response) {
+                    if (response.status === 'connected') {
                         postFB();
-                    }else{
+                    } else {
                         alert('Not Posted');
                     }
                 });
             }
         });
     }
-    function postFB(){
+    function postFB() {
         FB.ui({
-            method:'feed',
-            name:'Current Weather in'+$('#city').val()+' , '+$('#state').val(),
-            link:'http://forecast.io/',
-            picture:'http://forecast.yuhaozhu.me/src/'+icon,
-            description:'WEARTHER INFORMATION FROM FORECAST.IO',
-            display:'popup'
-        },function(response){
+            method: 'feed',
+            name: 'Current Weather in ' + $('#city').val() + ' , ' + $('#state').val(),
+            link: 'http://forecast.io/',
+            picture: 'http://forecast.yuhaozhu.me/src/' + icon,
+            description: weather_status+', '+weather_temp,
+            caption:'WEATHER INFORMATION FROM FORECAST.IO',
+            display: 'popup'
+        }, function (response) {
             if (response && !response.post_id) {
                 alert('Posted Successfully');
             } else {
@@ -358,7 +365,9 @@
         });
     }
     function parse(data) {
-        icon=data.currently.icon;
+        icon = data.currently.icon;
+        weather_status = data.currently.summary;
+        weather_temp = data.currently.temperature;
         $('#now_icon').attr("src", "src/" + data.currently.icon);
         $('#now_summary_text').text(data.currently.summary + ' in ' + $('#city').val() + ', ' + $('#state').val());
         $('#now_summary_tmp').text(data.currently.temperature);
@@ -401,11 +410,11 @@
             }
             day_content += '<span>' + daily[i].day + '</span></br></br>';
             day_content += '<span>' + daily[i].mDate + '</span></br>';
-            day_content += '<img style="width:50px;height:50px;" src="src/'+daily[i].icon+'"></img></br>';
+            day_content += '<img style="width:50px;height:50px;" src="src/' + daily[i].icon + '"></img></br>';
             day_content += '<span>' + 'Min' + '</span></br>';
             day_content += '<span>' + 'Temp' + '</span></br>';
             day_content += '<span style="font-size: 32px;">' + daily[i].temperatureMin + '</span></br></br>';
-            day_content += '<span>' + 'Max'+ '</span></br>';
+            day_content += '<span>' + 'Max' + '</span></br>';
             day_content += '<span>' + 'Temp' + '</span></br></br>';
             day_content += '<span style="font-size: 32px;">' + daily[i].temperatureMax + '</span></br>';
 
@@ -414,14 +423,14 @@
             day_content += '<button type="button" class="close" data-dismiss="modal">&times;</button>';
             var title = 'Weather in ' + $('#city').val() + ' on ' + daily[i].mDate;
             day_content += '<h4 class="modal-title">' + title + '</h4></div> <div style="text-align: center;background-color: white;" class="col-md-12 col-xs-12 col-sm-12 modal-body">';
-            day_content += '<img style="width:100px;height:100px;" src="src/'+daily[i].icon+'"/>';
-            day_content+='<div style="margin-bottom:10px;"class="col-md-12 col-sm-12 col-xs-12"><span style="font-size: 24px;color:black;"><b>'+daily[i].day+':</b></span><span style="font-size: 24px;color:yellow;"><b>'+daily[i].summary+'</b></span></div>';
-            day_content+='<div class="col-md-4 col-sm-12  col-xs-12"><span style="font-size: 16px;"><b>Sunrise Time</b></span></br><span>'+daily[i].sunriseTime+'</span></div>';
-            day_content+='<div class="col-md-4 col-sm-12  col-xs-12"><span style="font-size: 16px;"><b>Sunset Time</b></span></br><span>'+daily[i].sunsetTime+'</span></div>';
-            day_content+='<div class="col-md-4 col-sm-12  col-xs-12"><span style="font-size: 16px;"><b>Humidity</b></span></br><span>'+daily[i].humidity+'</span></div>';
-            day_content+='<div class="col-md-4 col-sm-12  col-xs-12"><span style="font-size: 16px;"><b>Wind Speed</b></span></br><span>'+daily[i].wind+'</span></div>';
-            day_content+='<div class="col-md-4 col-sm-12  col-xs-12"><span style="font-size: 16px;"><b>Visibility</b></span></br><span>'+daily[i].visibility+'</span></div>';
-            day_content+='<div class="col-md-4 col-sm-12  col-xs-12"><span style="font-size: 16px;"><b>Pressure</b></span></br><span>'+daily[i].pressure+'</span></div>';
+            day_content += '<img style="width:100px;height:100px;" src="src/' + daily[i].icon + '"/>';
+            day_content += '<div style="margin-bottom:10px;"class="col-md-12 col-sm-12 col-xs-12"><span style="font-size: 24px;color:black;"><b>' + daily[i].day + ':</b></span><span style="font-size: 24px;color:yellow;"><b>' + daily[i].summary + '</b></span></div>';
+            day_content += '<div class="col-md-4 col-sm-12  col-xs-12"><span style="font-size: 16px;"><b>Sunrise Time</b></span></br><span>' + daily[i].sunriseTime + '</span></div>';
+            day_content += '<div class="col-md-4 col-sm-12  col-xs-12"><span style="font-size: 16px;"><b>Sunset Time</b></span></br><span>' + daily[i].sunsetTime + '</span></div>';
+            day_content += '<div class="col-md-4 col-sm-12  col-xs-12"><span style="font-size: 16px;"><b>Humidity</b></span></br><span>' + daily[i].humidity + '</span></div>';
+            day_content += '<div class="col-md-4 col-sm-12  col-xs-12"><span style="font-size: 16px;"><b>Wind Speed</b></span></br><span>' + daily[i].wind + '</span></div>';
+            day_content += '<div class="col-md-4 col-sm-12  col-xs-12"><span style="font-size: 16px;"><b>Visibility</b></span></br><span>' + daily[i].visibility + '</span></div>';
+            day_content += '<div class="col-md-4 col-sm-12  col-xs-12"><span style="font-size: 16px;"><b>Pressure</b></span></br><span>' + daily[i].pressure + '</span></div>';
 
             day_content += '</div> <div style="background-color: white;" class=" col-md-12 col-xs-12 col-sm-12 modal-footer"> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> </div> </div></div></div>';
 
