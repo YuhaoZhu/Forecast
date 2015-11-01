@@ -321,10 +321,6 @@
         FB.getLoginStatus(function(response) {
             if (response.status === 'connected') {
                postFB();
-            } else if (response.status === 'not_authorized') {
-                // the user is logged in to Facebook,
-                // but has not authenticated your app
-                alert('Please authorize this app to post a message')
             } else {
                 // the user isn't logged in to Facebook.
                 FB.login(function(response){
