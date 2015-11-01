@@ -324,11 +324,14 @@
                postFB();
             } else {
                 // the user isn't logged in to Facebook.
+                var posted=false;
                 FB.login(function(response){
                     if (response.status==='connected'){
+                        posted=true;
                         postFB();
                     }
                 });
+                if (posted==false) alert('Not Posted');
             }
         });
     }
@@ -336,7 +339,6 @@
         FB.ui({
             method:'feed',
             link:'http://forecast.io/',
-            picture:'src/'+icon,
             description:'WEARTHER INFORMATION FROM FORECAST.IO'
         },function(response){
             if (response && !response.post_id) {
