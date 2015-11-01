@@ -324,14 +324,13 @@
                postFB();
             } else {
                 // the user isn't logged in to Facebook.
-                var posted=false;
                 FB.login(function(response){
                     if (response.status==='connected'){
-                        posted=true;
                         postFB();
+                    }else{
+                        alert('Not Posted');
                     }
                 });
-                if (posted==false) alert('Not Posted');
             }
         });
     }
