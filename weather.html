@@ -252,6 +252,7 @@
 <script type="text/javascript">
     "use strict";
     var map = null;
+    var icon=null;
     $(document).ready(function () {
         $('#result').hide();
         var data;
@@ -333,8 +334,10 @@
     }
     function postFB(){
         FB.ui({
-            method:'share',
-            href:'http://forecast.io/'
+            method:'feed',
+            link:'http://forecast.io/',
+            picture:'src/'+icon,
+            description:'WEARTHER INFORMATION FROM FORECAST.IO'
         },function(response){
             if (response && !response.post_id) {
                 alert('Posted Successfully');
@@ -351,6 +354,7 @@
         });
     }
     function parse(data) {
+        icon=data.currently.icon;
         $('#now_icon').attr("src", "src/" + data.currently.icon);
         $('#now_summary_text').text(data.currently.summary + ' in ' + $('#city').val() + ', ' + $('#state').val());
         $('#now_summary_tmp').text(data.currently.temperature);
