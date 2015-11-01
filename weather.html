@@ -12,6 +12,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/additional-methods.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.light.js"></script>
+    <script>
+        //Init Facebook SDK
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '1639037693020962',
+                xfbml      : true,
+                version    : 'v2.5'
+            });
+        };
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
 </head>
 <body>
 <div class="container-fluid">
@@ -128,10 +145,10 @@
         <!-- Display for result-->
         <div id='result' class="row col-md-12 col-xs-12 col-sm-12 none_padding_margin">
             <ul class="nav nav-tabs none_gap" role="tablist">
-                <li role="presentation" class="active" style="max-width: 33%;"><a href="#now" aria-controls="now"
+                <li role="presentation" class="active" style=" max-width: 33%;"><a href="#now" aria-controls="now"
                                                                                   role="tab" data-toggle="tab">Right
                     Now</a></li>
-                <li role="presentation" style="max-width: 33%;"><a href="#hours" aria-controls="hours" role="tab"
+                <li role="presentation" style=" max-width: 33%;"><a href="#hours" aria-controls="hours" role="tab"
                                                                    data-toggle="tab">Next 24
                     Hours</a></li>
                 <li role="presentation" style="max-width: 33%;"><a href="#days" aria-controls="days" role="tab"
@@ -164,7 +181,7 @@
                                 </label>
 
                                 <div class="col-md-1 col-sm-1 col-xs-1 img-responsive none_gap">
-                                    <img class="img-responsive" src="src/fb_icon.png" style="padding-right: 5px;"/>
+                                    <a href="javascript:shareFB()"><img class="img-responsive" src="src/fb_icon.png" style="height:20px;width:20px;"/></a>
                                 </div>
                             </div>
                         </div>
@@ -300,6 +317,36 @@
         redrawMap();
     });
 
+    function shareFB(){
+        FB.getLoginStatus(function(response) {
+            if (response.status === 'connected') {
+               postFB();
+            } else if (response.status === 'not_authorized') {
+                // the user is logged in to Facebook,
+                // but has not authenticated your app
+                alert('Please authorize this app to post a message')
+            } else {
+                // the user isn't logged in to Facebook.
+                FB.login(function(response){
+                    if (response.status==='connected'){
+                        postFB();
+                    }
+                });
+            }
+        });
+    }
+    function postFB(){
+        FB.ui({
+            method:'share',
+            href:'http://forecast.io/'
+        },function(response){
+            if (response && !response.post_id) {
+                alert('Posted Successfully');
+            } else {
+                alert('Not Posted');
+            }
+        });
+    }
     function redrawMap() {
         var h1 = $('#now_weather').height();
         if (h1 === 0) return;
@@ -425,7 +472,6 @@
             map.setCenter(lonLat, zoom);
         }
     }
-
     function clearForm() {
         document.getElementById("address").value = "";
         document.getElementById("city").value = "";
