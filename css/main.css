@@ -6,46 +6,48 @@ body {
     background-size: cover;
 }
 
-.head_title{
+.head_title {
     text-align: center;
 }
 
-#state-error{
+#state-error {
     color: red;
 }
 
-#address-error{
+#address-error {
     color: red;
 }
 
-#city-error{
+#city-error {
     color: red;
 }
 
-.red-star{
-   color: red;
+.red-star {
+    color: red;
 }
 
-.label_text{
+.label_text {
     color: white;
 }
-.narrow_gap{
+
+.narrow_gap {
     padding-left: 1px;
     padding-right: 1px;
 }
-.none_gap{
+
+.none_gap {
     padding-left: 0px;
     padding-right: 0px;
 }
 
-.nav-tabs>li>a{
-    background-color:#EFEFEF;
-    color:#5A82BB;
+.nav-tabs > li > a {
+    background-color: #EFEFEF;
+    color: #5A82BB;
 }
 
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:hover,
-.nav-tabs > li.active > a:focus{
+.nav-tabs > li.active > a:focus {
     color: #EEF3F8;
     background-color: #5A82BB;
 }
@@ -54,14 +56,14 @@ body {
     background-color: #EDDEDE;
 }
 
-.none_padding_margin{
+.none_padding_margin {
     padding-left: 0px;
     padding-right: 0px;
     margin-left: 0px;
     margin-right: 0px;
 }
 
-.thead_hour th{
+.thead_hour th {
     padding-left: 0px;
     padding-right: 0px;
     text-align: center;
@@ -69,24 +71,97 @@ body {
     color: white;
 }
 
-.tbody_hour{
+.tbody_hour {
     text-align: center;
 }
-.tbody_hour:before{
+
+.tbody_hour:before {
     display: block;
     line-height: 10em;
     color: white;
 }
-.tbody_hour tr{
+
+.tbody_hour tr {
     background-color: white;
 }
 
-.table_hour_collapse th{
+.table_hour_collapse th {
     text-align: center;
 }
-.table_hour_collapse thead{
+
+.table_hour_collapse thead {
     background: white;
 }
-.table_hour_collapse td{
+
+.table_hour_collapse td {
     background: #F3F3F3;
+}
+
+.btn-day{
+    text-align: center;
+    overflow: visible;
+    padding-left: 0px;
+    padding-right: 0px;
+    font-size: 13px;
+}
+@media (min-width: 992px) {
+    #days_content {
+        background-color: #34373C;
+    }
+
+    .btn-day {
+        color: white;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .btn-day:visited {
+        color: white;
+    }
+
+    .btn-day:hover {
+        color: white;
+    }
+
+    .btn-day:active {
+        color: white;
+    }
+
+    .btn-day:focus{
+        color: white;
+    }
+
+    .btn-non-primary {
+        margin-left: 5px;
+    }
+}
+
+@media (max-width: 991px) {
+    #days_content {
+        background-color: transparent;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .btn-day:focus{
+        color: white;
+    }
+
+    .btn-day:visited {
+        color: white;
+    }
+
+    .btn-day:active{
+        color: white;
+    }
+
+    .btn-day:hover {
+        color: white;
+    }
+
+    .btn-day {
+        color: white;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
 }

@@ -143,7 +143,7 @@ if (strcmp($status, "OK") == 0) {
         $daily=new stdClass();
         $daily->summary=$row->summary;
         $daily->day=date("l",$row->time);
-        $daily->mDate=date("F d",$row->time);
+        $daily->mDate=date("M d",$row->time);
         $daily->icon=weather_image($row->icon);
         $daily->temperatureMax=(int)($row->temperatureMax) .'&deg;';
         $daily->temperatureMin=(int)($row->temperatureMin) .'&deg;';

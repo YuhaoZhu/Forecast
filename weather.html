@@ -222,11 +222,13 @@
                     </table>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="days">
-                    Next 7 Days
+                    <div class="col-md-12 col-xs-12 col-sm 12" id="days_content">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 
 </div>
@@ -323,6 +325,7 @@
         $('#hour_temp_units').html("Temp(" + data.units.temperature_unit + ")");
         var content = "";
         var hourly = data.hourly.data;
+        content += '<tr><td colspan="5"/></tr>';
         for (var i = 0; i < 24; i++) {
             content += '<tr>';
             content += '<td>' + hourly[i].time + '</td>';
@@ -333,9 +336,47 @@
             content += '</tr>';
             content += '<tr style="background-color:#F3F3F3;" class="collapse" id="data' + i + '">' + '<td colspan="5">'
             content += '<table class="table table_hour_collapse" ><thead"><tr><th>Wind</th><th>Humidity</th><th>Visibility</th><th>Pressure</th></tr></thead>';
-            content += '<tbody><tr><td>'+hourly[i].wind+'</td><td>'+hourly[i].humidity+'</td><td>'+hourly[i].visibility+'</td><td>'+hourly[i].pressure+'</td></tr></tbody></table></td></tr>';
+            content += '<tbody><tr><td>' + hourly[i].wind + '</td><td>' + hourly[i].humidity + '</td><td>' + hourly[i].visibility + '</td><td>' + hourly[i].pressure + '</td></tr></tbody></table></td></tr>';
         }
         $('#tbody_hour').html(content);
+        var day_content = '';
+        var daily = data.daily.data;
+        var colors = ['#517CB5', '#CD4840', '#D38D4E', '#A5A43C', '#846837', '#AB6263', '#A03E62'];
+        for (var i = 1; i <= 7; i++) {
+            if (i == 1) {
+                day_content += '<button class="btn-day btn col-md-offset-2 col-md-1 col-sm-12 col-xs-12" style="background-color: ' + colors[i - 1] + '"data-toggle="modal" data-target="#dayData' + i + '">';
+            } else {
+                day_content += '<button class="btn-day btn btn-non-primary col-md-1 col-sm-12 col-xs-12" style="background-color: ' + colors[i - 1] + '"data-toggle="modal" data-target="#dayData' + i + '">';
+            }
+            day_content += '<span>' + daily[i].day + '</span></br></br>';
+            day_content += '<span>' + daily[i].mDate + '</span></br>';
+            day_content += '<img style="width:50px;height:50px;" src="src/'+daily[i].icon+'"></img></br>';
+            day_content += '<span>' + 'Min' + '</span></br>';
+            day_content += '<span>' + 'Temp' + '</span></br>';
+            day_content += '<span style="font-size: 32px;">' + daily[i].temperatureMin + '</span></br></br>';
+            day_content += '<span>' + 'Max'+ '</span></br>';
+            day_content += '<span>' + 'Temp' + '</span></br></br>';
+            day_content += '<span style="font-size: 32px;">' + daily[i].temperatureMax + '</span></br>';
+
+            day_content += '</button>';
+            day_content += '<div id="dayData' + i + '" class="modal fade" role="dialog"><div class="modal-dialog"><div class="modal-content"><div style="background-color: white;" class="col-md-12 col-xs-12 col-sm-12 modal-header">';
+            day_content += '<button type="button" class="close" data-dismiss="modal">&times;</button>';
+            var title = 'Weather in ' + $('#city').val() + ' on ' + daily[i].mDate;
+            day_content += '<h4 class="modal-title">' + title + '</h4></div> <div style="text-align: center;background-color: white;" class="col-md-12 col-xs-12 col-sm-12 modal-body">';
+            day_content += '<img style="width:100px;height:100px;" src="src/'+daily[i].icon+'"/>';
+            day_content+='<div style="margin-bottom:10px;"class="col-md-12 col-sm-12 col-xs-12"><span style="font-size: 24px;color:black;"><b>'+daily[i].day+':</b></span><span style="font-size: 24px;color:yellow;"><b>'+daily[i].summary+'</b></span></div>';
+            day_content+='<div class="col-md-4 col-sm-12  col-xs-12"><span style="font-size: 16px;"><b>Sunrise Time</b></span></br><span>'+daily[i].sunriseTime+'</span></div>';
+            day_content+='<div class="col-md-4 col-sm-12  col-xs-12"><span style="font-size: 16px;"><b>Sunset Time</b></span></br><span>'+daily[i].sunsetTime+'</span></div>';
+            day_content+='<div class="col-md-4 col-sm-12  col-xs-12"><span style="font-size: 16px;"><b>Humidity</b></span></br><span>'+daily[i].humidity+'</span></div>';
+            day_content+='<div class="col-md-4 col-sm-12  col-xs-12"><span style="font-size: 16px;"><b>Wind Speed</b></span></br><span>'+daily[i].wind+'</span></div>';
+            day_content+='<div class="col-md-4 col-sm-12  col-xs-12"><span style="font-size: 16px;"><b>Visibility</b></span></br><span>'+daily[i].visibility+'</span></div>';
+            day_content+='<div class="col-md-4 col-sm-12  col-xs-12"><span style="font-size: 16px;"><b>Pressure</b></span></br><span>'+daily[i].pressure+'</span></div>';
+
+            day_content += '</div> <div style="background-color: white;" class=" col-md-12 col-xs-12 col-sm-12 modal-footer"> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> </div> </div></div></div>';
+
+        }
+        $('#days_content').html(day_content);
+
     }
     function buildMap(x, y) {
         //TODO Put the map working
