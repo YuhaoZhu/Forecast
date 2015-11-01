@@ -337,8 +337,11 @@
     function postFB(){
         FB.ui({
             method:'feed',
+            name:'Current Weather in'+$('#city').val()+' , '+$('#state').val(),
             link:'http://forecast.io/',
-            description:'WEARTHER INFORMATION FROM FORECAST.IO'
+            picture:'http://forecast.yuhaozhu.me/src/'+icon,
+            description:'WEARTHER INFORMATION FROM FORECAST.IO',
+            display:'popup'
         },function(response){
             if (response && !response.post_id) {
                 alert('Posted Successfully');
