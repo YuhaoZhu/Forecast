@@ -16,7 +16,7 @@
         //Init Facebook SDK
         window.fbAsyncInit = function () {
             FB.init({
-                appId: '1639037693020962',
+                appId: '1615315395397076',
                 xfbml: true,
                 version: 'v2.5'
             });
@@ -345,12 +345,12 @@
             method: 'feed',
             name: 'Current Weather in ' + $('#city').val() + ' , ' + $('#state').val(),
             link: 'http://forecast.io/',
-            picture: 'http://forecast.yuhaozhu.me/src/' + icon,
+            picture: 'http://cs-server.usc.edu:36764/forecast/src/' + icon,
             description: weather_status+', '+weather_temp,
             caption:'WEATHER INFORMATION FROM FORECAST.IO',
             display: 'popup'
         }, function (response) {
-            if (response && !response.post_id) {
+            if (response && !response.error_message) {
                 alert('Posted Successfully');
             } else {
                 alert('Not Posted');
