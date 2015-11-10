@@ -15,6 +15,13 @@ function weather_image($head)
     if (strcmp($head, 'cloudy') == 0) return "cloudy.png";
     if (strcmp($head, 'partly-cloudy-day') == 0) return "cloud_day.png";
     if (strcmp($head, 'partly-cloudy-night') == 0) return "cloud_night.png";
+    return "N/A";
+}
+function preNA($val){
+    if (empty($val)){
+        return "N/A";
+    }
+    return $val;
 }
 function precipitation($val)
 {
@@ -130,10 +137,10 @@ if (strcmp($status, "OK") == 0) {
         $hourly->summary=weather_image($row->icon);
         $hourly->cloudCover=(int)($row->cloudCover*100) .'%';
         $hourly->temp=number_format($row->temperature,'2','.','');
-        $hourly->wind=$row->windSpeed .$windSpeed_unit;
+        $hourly->wind=preNA($row->windSpeed) .$windSpeed_unit;
         $hourly->humidity=(int)($row->humidity*100) .'%';
-        $hourly->visibility=$row->visibility .$visibility_unit;
-        $hourly->pressure=$row->pressure .$pressure_unit;
+        $hourly->visibility=preNA($row->visibility) .$visibility_unit;
+        $hourly->pressure=preNA($row->pressure) .$pressure_unit;
         array_push($weather_data->data->hourly->data,$hourly);
     }
 
@@ -141,16 +148,16 @@ if (strcmp($status, "OK") == 0) {
     $weather_data->data->daily->data=[];
     foreach($doc->daily->data as $row){
         $daily=new stdClass();
-        $daily->summary=$row->summary;
+        $daily->summary=preNA($row->summary);
         $daily->day=date("l",$row->time);
         $daily->mDate=date("M d",$row->time);
-        $daily->icon=weather_image($row->icon);
+        $daily->icon=weather_image(preNA(($row->icon)));
         $daily->temperatureMax=(int)($row->temperatureMax) .'&deg;';
         $daily->temperatureMin=(int)($row->temperatureMin) .'&deg;';
-        $daily->wind=$row->windSpeed .$windSpeed_unit;
+        $daily->wind=preNA($row->windSpeed) .$windSpeed_unit;
         $daily->humidity=(int)($row->humidity*100) .'%';
-        $daily->visibility=$row->visibility .$visibility_unit;
-        $daily->pressure=$row->pressure .$pressure_unit;
+        $daily->visibility=preNA($row->visibility) .$visibility_unit;
+        $daily->pressure=preNA($row->pressure) .$pressure_unit;
         $daily->sunriseTime=date("h:i A", $row->sunriseTime);
         $daily->sunsetTime=date("h:i A", $row->sunsetTime);
         array_push($weather_data->data->daily->data,$daily);

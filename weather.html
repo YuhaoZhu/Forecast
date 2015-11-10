@@ -226,7 +226,7 @@
                     </div>
                     <div id="map" class="col-md-6 col-xs-12 col-sm-12 none_gap"></div>
                 </div>
-                <div role="tabpanel" class="tab-pane fade" id="hours">
+                <div role="tabpanel" style="overflow-x: auto;" class="tab-pane fade" id="hours">
                     <table class="table">
                         <thead class="thead_hour">
                         <tr>
@@ -370,7 +370,7 @@
         weather_temp = data.currently.temperature;
         $('#now_icon').attr("src", "src/" + data.currently.icon);
         $('#now_summary_text').text(data.currently.summary + ' in ' + $('#city').val() + ', ' + $('#state').val());
-        $('#now_summary_tmp').text(data.currently.temperature);
+        $('#now_summary_tmp').html(data.currently.temperature);
         $('#now_summary_degree').html(data.units.temperature_unit);
         $('#now_summary_tmpMin').html('L:' + data.currently.temperatureMin);
         $('#now_summary_tmpMax').html('H:' + data.currently.temperatureMax);
